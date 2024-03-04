@@ -1,0 +1,49 @@
+<!-- timetable.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Timetable</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Your custom CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="card-title">Student Timetable</h1>
+        <div class="timetable">
+            <h3>Timetable for {{ student_name }}</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day, entries in timetable.items() %}
+                        {% for entry in entries %}
+                            <tr>
+                                <td>{{ day }}</td>
+                                <td>{{ entry.time }}</td>
+                                <td>{{ entry.subject }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <a href="/" class="btn btn-primary">Back to NV Form</a>
+        </div>
+    </div>
+    <!-- Bootstrap JS (optional, if needed) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

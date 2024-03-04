@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Booking</title>
+</head>
+<body>
+    <h1>Book an Appointment</h1>
+    <form action="/book_appointment" method="post">
+        <label for="parent_name">Your Name:</label>
+        <input type="text" id="parent_name" name="parent_name" required><br><br>
+
+        <label for="child_nv">Child's NV Number:</label>
+        <input type="text" id="child_nv" name="child_nv" required><br><br>
+
+        <label for="subject">Select Subject:</label>
+        <select id="subject" name="subject" required>
+            <option value="Mathematics">Mathematics</option>
+            <option value="English">English</option>
+            <!-- Add more subjects here -->
+        </select><br><br>
+
+        <input type="submit" value="Book Appointment">
+    </form>
+</body>
+</html>

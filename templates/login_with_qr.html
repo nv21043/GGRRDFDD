@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with QR Code</title>
+    <!-- Include jsQR library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.0/dist/jsQR.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        #qr-video {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        #qr-result {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login with QR Code</h1>
+        <video id="qr-video" autoplay playsinline></video>
+        <div id="qr-result"></div>
+        <button onclick="uploadQRCode()">Upload QR Code</button>
+        <!-- Add file input for QR code upload -->
+        <input type="file" accept="image/*" id="qr-file-input" style="display: none;">
+    </div>
+    <script>
+        const video = document.getElementById('qr-video');
+        const resultDiv = document.getElementById('qr-result');
+        const fileInput = document.getElementById('qr-file-input');
+        let isScanning = true;
+
+        // Function to start QR code scanning
+        async function startScan() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                video.srcObject = stream;
+                video.play();
+                requestAnimationFrame(scanFrame);
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+            }
+        }
+
+        // Function to scan the video frame for QR codes
+        function scanFrame() {
+            if (!isScanning) return;
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+            if (code) {
+                resultDiv.textContent = 'QR Code found: ' + code.data;
+                // Redirect to SIS website with username and password
+                redirectToSIS(code.data);
+            } else {
+                resultDiv.textContent = 'No QR Code found.';
+            }
+            requestAnimationFrame(scanFrame);
+        }
+
+        // Function to redirect to SIS website with username and password
+        function redirectToSIS(data) {
+            // Extract username and password from QR code data
+            const [username, password] = data.split(',');
+            // Construct SIS login URL with query parameters
+            const sisLoginURL = `https://sis.nvtc.edu.bh/site/login?username=${encodeURIComponent(username.trim())}&password=${encodeURIComponent(password.trim())}`;
+            // Redirect to SIS login page
+            window.location.href = sisLoginURL;
+        }
+
+        // Function to handle QR code upload
+        function uploadQRCode() {
+            // Trigger file input click
+            fileInput.click();
+        }
+
+        // Event listener for file input change
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const code = jsQR(imageData.data, imageData.width, imageData.height);
+                        if (code) {
+                            resultDiv.textContent = 'QR Code found: ' + code.data;
+                            // Redirect to SIS website with username and password
+                            redirectToSIS(code.data);
+                        } else {
+                            resultDiv.textContent = 'No QR Code found.';
+                        }
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Start scanning when the page is loaded
+        window.addEventListener('load', () => {
+            startScan();
+        });
+    </script>
+</body>
+</html>

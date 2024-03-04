@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+    <h2>Edit Student Data</h2>
+    <form action="/update_student" method="POST">
+        <input type="hidden" name="nv_number" value="{{ nv_number }}">
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+                <th>Update/Delete</th>
+            </tr>
+            {% for key, value in students.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <input type="text" name="Name" value="{{ value }}">
+                <td>
+                    <button type="submit" class="button">Update</button>
+                    <a href="/delete_entry?nv_number={{ nv_number }}&key={{ key }}" class="button">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </form>
+    <br>
+    <a href="/" class="button">Back to NV Number Form</a>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>School Instructor Robot</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the School Instructor Robot</h1>
+    </header>
+    <!-- Feature: Submitting Sick Leave Paper -->
+    <section id="submitSickLeave">
+        <h2>Submit Sick Leave Paper</h2>
+        <form id="sickLeaveForm">
+            <label for="studentName">Student Name:</label>
+            <input type="text" id="studentName" name="studentName" required>
+
+            <label for="reason">Reason:</label>
+            <textarea id="reason" name="reason" required></textarea>
+
+            <label for="photo">Upload or Take Photo:</label>
+            <input type="file" accept="image/*" id="photo" name="photo">
+            <button type="button" onclick="submitSickLeave()">Submit</button>
+        </form>
+    </section>
+    <!-- Include your HTML and other sections -->
+<!-- ... (other HTML code) -->
+
+    <section id="randomAIQuestion">
+    <h2>Random AI-Generated Question</h2>
+    <button type="button" onclick="generateRandomQuestion()">Generate Random AI-Generated Question</button>
+    <p id="randomQuestionResult"></p>
+    </section>
+    <!-- Add a new section for the Feedback form -->
+<section id="feedbackForm">
+    <h2>Feedback</h2>
+    <form id="userFeedbackForm">
+        <label for="feedbackType">Feedback Type:</label>
+        <select id="feedbackType" name="feedbackType" required>
+            <option value="positive">Positive</option>
+            <option value="negative">Negative</option>
+            <option value="neutral">Neutral</option>
+        </select>
+
+        <label for="feedbackMessage">Feedback Message:</label>
+        <textarea id="feedbackMessage" name="feedbackMessage" required></textarea>
+
+        <button type="button" onclick="submitFeedback()">Submit Feedback</button>
+    </form>
+</section>
+
+<section id="parentLogin">
+    <h2>Parent Login</h2>
+    <form id="parentLoginForm">
+        <label for="parentUsername">Username:</label>
+        <input type="text" id="parentUsername" name="parentUsername" required>
+
+        <label for="parentPassword">Password:</label>
+        <input type="password" id="parentPassword" name="parentPassword" required>
+
+        <button type="button" onclick="loginParent()">Login</button>
+    </form>
+</section>
+
+<section id="parentDashboard" style="display: none;">
+    <button id="logoutButton" onclick="logoutParent()">Logout</button>
+    <p id="parentInfo"></p>
+    <div id="childDetails"></div>
+</section>
+
+<div id="errorAlert" class="alert" style="display:none;">
+    Incorrect username or password. Please try again.
+</div>
+    <script src="app.js"></script>
+</body>
+</html>
